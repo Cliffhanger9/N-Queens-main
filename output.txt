@@ -1,0 +1,18 @@
+Solution found:
+[4, 7, 0, 2, 5, 8, 6, 9, 3, 1]
+
+Final board configuration:
+. . Q . . . . . . .
+. . . . . . . . . Q
+. . . Q . . . . . .
+. . . . . . . . Q .
+Q . . . . . . . . .
+. . . . Q . . . . .
+. . . . . . Q . . .
+. Q . . . . . . . .
+. . . . . Q . . . .
+. . . . . . . Q . .
+
+Final conflicted queens: set()
+Solution check: True
+Execution time: 0.00 seconds

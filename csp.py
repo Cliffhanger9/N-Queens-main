@@ -16,10 +16,7 @@ class nQueensCSP:
         # list to keep track of conflicts in each row
         self.row_conflicts = [0] * n     
         
-        # list to keep track of conflicts in each right diagonal (top left to bottom right)
-        # row-col will be the same number for each element that is in the same diagonal
-        # the min number that row-col could be is 0 - (n-1) = -(n-1) and the max number is (n-1) - 0 = n-1
-        # so the range is -(n-1) to n-1 which is 2*n-1 (the size of this list) 
+        # list to keep track of conflicts in each right diagonal (top left to bottom right) 
         self.rdiag_conflicts = [0] * (2 * n - 1)
         
         # list to keep track of conflicts in each left diagonal (top right to bottom left)
@@ -39,16 +36,10 @@ class nQueensCSP:
             if self.conflicts(col) > 0:
                 self.conflicted_queens.add(col)
             
-            # Move to the next row with 2 over and 1 down
+            # Places queens on board in a way to reduce conflicts
             row = (col * 2) % n
         
-        # CONFLICT LISTS ARE ALL CORRECT 
-        # print("row_conflicts list:", self.row_conflicts) 
-        # print("rdiag_conflicts list:", self.rdiag_conflicts) 
-        # print("ldiag_conflicts list:", self.ldiag_conflicts) 
-
-
-        
+    # Calculates conflicts at a certain cell 
     def conflicts(self, col):
 
         row = self.variables[col]
@@ -65,8 +56,8 @@ class nQueensCSP:
         return total_conflicts
 
 
-    
-    def update_conflicted_queens(self, col):
+    # updates the conflicted_queens set 
+    def update_conflicted_queens(self):
         self.conflicted_queens.clear()
         
         # Reassess conflicts for all queens
@@ -74,54 +65,36 @@ class nQueensCSP:
             if self.conflicts(col) > 0:
                 self.conflicted_queens.add(col)
 
-        
-        #print(f"Updated conflicted queens: {self.conflicted_queens}")
-
+    # checks if solution is correct
     def is_valid_solution(self):
-        if self.conflicted_queens:
-            return False
-        else:
-            return True
+        for col in range(self.n):
+            if self.conflicts(col) > 0:
+                return False
+        return True
     
-    
+    # moves queen to new row and updates necessary row, rdiag, and ldiag conflicts
     def move_queen(self, col, new_row):
-    
 
         # storing original row queen was in
         old_row = self.variables[col]
         rdiag_index = old_row - col + (self.n - 1)
         ldiag_index = old_row + col
         
-        
         # subtracting one conflict from each category now that the queen is being moved
         self.row_conflicts[old_row] -= 1
         self.rdiag_conflicts[rdiag_index] -= 1
         self.ldiag_conflicts[ldiag_index] -= 1
-    
     
         # move the queen to new_row 
         self.variables[col] = new_row
         rdiag_index = new_row - col + (self.n - 1)
         ldiag_index = new_row + col
         
-        
         # adding conflict in the new position's categories
         self.row_conflicts[new_row] += 1
         self.rdiag_conflicts[rdiag_index] += 1
         self.ldiag_conflicts[ldiag_index] += 1
     
+        # reflect this change in the conflicted_queens set
+        self.update_conflicted_queens()
 
-        #print(f"queen is now at {self.conflicted_queens[col]}")
-        self.update_conflicted_queens(col)
-    
-def print_board(state):
-    n = len(state)
-    for row in range(n):
-        row_string = ""
-        for col in range(n):  
-            if state[col] == row:
-                row_string += "Q "
-            else:
-                row_string += ". "
-        print(row_string.strip()) 
-    
