@@ -74,10 +74,15 @@ def print_board(state, file=None):
             
 def main():
 
+    queens = input("Please input the number of queens for the n-queens problem. (Make sure the number is not 2 or non-numeric).")
+    while queens == "2" or queens.isnumeric() != True:
+        queens = input("Please input the number of queens for the n-queens problem. (Make sure the number is not 2 or non-numeric).")
+    
     # n = number of queens
-    n = 10
+    n = int(queens)
     max_steps = n * 100
     start_time = time.time()
+    
     # creates instance of CSP with a certain nxn board
     csp = nQueensCSP(n)
 
@@ -89,11 +94,11 @@ def main():
     # write the relevant solution information to ouput.txt
     with open("output.txt", "w") as output_file:
         if solution:
-            output_file.write("Solution found:\n")
+            output_file.write(f"Solution to the {n}-queens problem found:\n")
             output_file.write(f"{solution}\n\n")
         
         # only print the board if the n is under 500, any bigger and the board becomes too large and unreadable
-        if len(solution) < 500:
+        if len(solution) < 1000:
             output_file.write("Final board configuration:\n")
             print_board(csp.variables, file=output_file)
     
