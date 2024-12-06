@@ -1,3 +1,4 @@
+import copy
 from csp import nQueensCSP
 import random
 import time
@@ -76,6 +77,7 @@ def print_board(state, file=None):
 def plot_placement_heatmap(csp, n, grid_size):
     #grid_size determines how many sub-grids
     #e.g. grid_size = 50 then heat map has 2500 sub-grids
+    # num of sub grids = grid_size^2
     
 
     #section size determines how many rows and columns each sub-grid covers
@@ -115,15 +117,19 @@ def main():
     
     # creates instance of CSP with a certain nxn board
     csp = nQueensCSP(n)
-
+    csp_initial_config = copy.deepcopy(csp)
+    
     # call min_conflicts to solve the CSP
     solution = min_conflicts(csp, max_steps)
     
     end_time = time.time()
-    plot_placement_heatmap(csp, n,grid_size=100)
+    plot_placement_heatmap(csp, n,grid_size=10)
 
     # write the relevant solution information to ouput.txt
     with open("output.txt", "w") as output_file:
+        if n <= 100:
+            output_file.write(f"initial board configuration:\n")
+            print_board(csp_initial_config.variables, file = output_file)
         if solution:
             output_file.write(f"Solution to the {n}-queens problem found:\n")
             output_file.write(f"{solution}\n\n")

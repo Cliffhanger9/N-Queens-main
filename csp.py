@@ -89,12 +89,12 @@ class nQueensCSP:
         self.variables[col] = new_row
         rdiag_index = new_row - col + (self.n - 1)
         ldiag_index = new_row + col
-        
+        #print(f"Moving queen in col {col} row {old_row} to {new_row} ")
         # adding conflict in the new position's categories
         self.row_conflicts[new_row] += 1
         self.rdiag_conflicts[rdiag_index] += 1
         self.ldiag_conflicts[ldiag_index] += 1
-    
+
         # reflect this change in the conflicted_queens set
         self.update_conflicted_queens()
 
