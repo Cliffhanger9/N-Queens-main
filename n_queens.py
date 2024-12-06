@@ -3,7 +3,7 @@ from csp import nQueensCSP
 import random
 import time
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 # picks a random conflicted queen from the conflicted_queens set
 def select_conflicted_queen(csp):
     return random.choice(list(csp.conflicted_queens))
@@ -73,7 +73,7 @@ def print_board(state, file=None):
             file.write(row_string.strip() + "\n") 
         else:
             print(row_string.strip())
-
+"""
 def plot_placement_heatmap(csp, n, grid_size):
     #grid_size determines how many sub-grids
     #e.g. grid_size = 50 then heat map has 2500 sub-grids
@@ -82,28 +82,29 @@ def plot_placement_heatmap(csp, n, grid_size):
 
     #section size determines how many rows and columns each sub-grid covers
     #e.g. 10k//50 = 200 so each grid covers 200 rows and columns
-    section_size = n // grid_size
+    section_size = n / grid_size
     heatmap = np.zeros((grid_size, grid_size))
     
     # Mark queen placements
     for col in range(n):
         row = csp.variables[col]
         x = int(col / section_size)  
-        y = int(row / section_size) 
-        heatmap[x, y] += 1  #count how many queens in subgrid
+        y = int(row / section_size)
+
+        heatmap[x,y] += 1  #count how many queens in subgrid
     
     
 
     plt.figure(figsize=(20, 20))
-    plt.imshow(heatmap, cmap="Blues", interpolation="nearest", aspect="auto", vmax=heatmap.max())
+    plt.imshow(heatmap, cmap="Blues", interpolation="nearest", aspect="auto", origin="upper")
     plt.colorbar(label="Queen Placements per sub-grid containing 200 rows and columns")
     plt.title(f"Queen Placement Heatmap for n = {n}")
     plt.xlabel("Columns")
     plt.ylabel("Rows")
-    
+   
 
     plt.show()
-            
+"""
 def main():
 
     queens = input("Please input the number of queens for the n-queens problem. (Make sure the number is not 2 or non-numeric).")
@@ -123,10 +124,12 @@ def main():
     solution = min_conflicts(csp, max_steps)
     
     end_time = time.time()
-    plot_placement_heatmap(csp, n,grid_size=10)
+    #plot_placement_heatmap(csp, n,grid_size=50)
 
     # write the relevant solution information to ouput.txt
     with open("output.txt", "w") as output_file:
+        output_file.write("Initial Queen configurations:\n")
+        output_file.write(f"{csp_initial_config.variables}\n")
         if n <= 100:
             output_file.write(f"initial board configuration:\n")
             print_board(csp_initial_config.variables, file = output_file)
